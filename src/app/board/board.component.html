@@ -1,0 +1,70 @@
+  <div class="page-content page-container" id="page-content">
+    <div class="padding">
+        <div class="row">
+            <div class="col-md-12 col-6">
+                <h3>Simple Board <button type="button" class="float-right btn btn-primary" (click)="addList($event)">Add new list</button></h3>
+            </div>
+        </div>
+        <div class="row container d-flex justify-content-center">
+            <div class="col-sm-12">
+                <!-- Draggable default card start -->
+                <div class="row mt-2  sortable-list" >
+                    <div class="col-md-3 col-6 mb-2" *ngFor="let list of userlist;  let i = index">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4>List {{i+1}}<button type="button" class="float-right btn btn-danger" (click)="deleteList(i)">Delete list</button></h4>
+                            </div>
+                            <div class="card-block">
+                                <div class="row sortable-card connectedSortable">
+                                    <div class="col-md-12 mb-2" *ngFor="let card of list.cards; let j = index">
+                                        <div class="card-sub" (click)="open(mymodal,i,j)"> 
+                                            <div class="card-block">
+                                                <h4 class="card-title">{{card.title}}</h4>
+                                                <p class="card-text">{{card.desc}}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12 col-6 mt-2">
+                                        <button type="button" class="btn btn-primary" (click)="addCard(i)">Add New Card</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div> <!-- Draggable default card start -->
+            </div>
+        </div>
+    </div>
+</div>
+<ng-template #mymodal let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Edit Card</h4>
+      <button type="button" class="float-right btn btn-danger" (click)="deleteCard();modal.close('Save click');">Delete Card</button>
+    </div>
+    <div class="modal-body">
+        <form>
+            <div class="form-group">
+              <label for="exampleFormControlFile1">Title</label>
+              <input type="text" class="form-control-file" id="exampleFormControlFile1" [(ngModel)]="modelData.title" name="title">
+            </div>
+            <div class="form-group">
+                <label for="exampleFormControlTextarea1">Card Description</label>
+                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" [(ngModel)]="modelData.desc" name="desc"></textarea>
+              </div>
+              <div class="form-group">
+                <label for="exampleFormControlTextarea1">Add Comment</label>
+                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="desc" (keydown.enter)="addComment($event)"></textarea>
+              </div>
+          </form>
+          <h5>Comments:</h5>
+          <ul class="list-group">
+            <li class="list-group-item" *ngFor="let comment of modelData.comments;">{{comment.text}}</li>
+          </ul>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-dark" (click)="updateCard();modal.close('Save click');">Ok</button>
+    </div>
+  </ng-template>
